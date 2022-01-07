@@ -8,34 +8,36 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException; 
 
 public class Leser {
-
-    private BufferedReader leser;
     private String header;
+    private BufferedReader leser;
 
-    public Leser(String pfad) throws FileNotFoundException, IOException{
-        String[] file = pfad.split(".");
+    public Leser(String pfad) throws IOException {
+        String[] file = pfad.split("\\.");
+        String fullpath = System.getProperty("user.dir") + "/serie5/" + pfad;
         if (file.length == 3) {
-            if (file[2] == "gz") {
-                boolean zip = true;
-                leser = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(pfad))));
-                this.header = leser.readLine();
+            if ("gz".equals(file[2])) {
+                this.leser = new BufferedReader(new InputStreamReader(
+                        new GZIPInputStream(new FileInputStream(fullpath))));
+
             }
+
         } else {
-            leser = new BufferedReader(new FileReader(pfad));
+            this.leser = new BufferedReader(new FileReader(fullpath));
+
         }
 
         this.header = leser.readLine();
-    }
-    
-    public String getHeader(){
-        return header;
-        
+
     }
 
-    public List<String> liesInhalt() throws IOException {
+    public String getHeader() {
+        return this.header;
+
+    }
+
+    public List<String> liestInhalt() throws IOException {
         ArrayList<String> result = new ArrayList<>();
         boolean i = false;
         while (leser.ready()) {
@@ -45,7 +47,6 @@ public class Leser {
             i = true;
         }
         leser.close();
-        
         return result;
     }
 }
