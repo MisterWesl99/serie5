@@ -8,27 +8,46 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class Leser {
     private String header;
     private BufferedReader leser;
 
-    public Leser(String pfad) throws IOException {
+    public Leser(String pfad) {
         String[] file = pfad.split("\\.");
         String fullpath = System.getProperty("user.dir") + "/serie5/" + pfad;
         if (file.length == 3) {
             if ("gz".equals(file[2])) {
-                this.leser = new BufferedReader(new InputStreamReader(
-                        new GZIPInputStream(new FileInputStream(fullpath))));
+                try {
+                    this.leser = new BufferedReader(new InputStreamReader(
+                            new GZIPInputStream(new FileInputStream(fullpath))));
+                } catch (FileNotFoundException e) {
+
+                    e.printStackTrace();
+                } catch (IOException e) {
+
+                    e.printStackTrace();
+                }
 
             }
 
         } else {
-            this.leser = new BufferedReader(new FileReader(fullpath));
+            try {
+                this.leser = new BufferedReader(new FileReader(fullpath));
+            } catch (FileNotFoundException e) {
+
+                e.printStackTrace();
+            }
 
         }
 
-        this.header = leser.readLine();
+        try {
+            this.header = leser.readLine();
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
 
     }
 
@@ -37,16 +56,26 @@ public class Leser {
 
     }
 
-    public List<String> liestInhalt() throws IOException {
+    public List<String> liestInhalt() {
         ArrayList<String> result = new ArrayList<>();
         boolean i = false;
-        while (leser.ready()) {
-            if (i == true) {
-                result.add(leser.readLine());
+        try {
+            while (leser.ready()) {
+                if (i == true) {
+                    result.add(leser.readLine());
+                }
+                i = true;
             }
-            i = true;
+        } catch (IOException e) {
+
+            e.printStackTrace();
         }
-        leser.close();
+        try {
+            leser.close();
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
         return result;
     }
 }
