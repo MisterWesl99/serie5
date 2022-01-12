@@ -28,11 +28,12 @@ public class Main {
 
                 fileWriter.close();
             } catch (IOException e) {
-
+                System.out.println("Fehler beim Erstellen der Datei 'AuszuegeGG'.");
                 e.printStackTrace();
+                System.exit(0);
             }
         } else {
-            System.err.println("Header not matching expectations.");
+            System.err.println("Header stimmt nicht mit Erwartungen überein.");
 
         }
 

@@ -23,11 +23,13 @@ public class Leser {
                     this.leser = new BufferedReader(new InputStreamReader(
                             new GZIPInputStream(new FileInputStream(fullpath))));
                 } catch (FileNotFoundException e) {
-
+                    System.out.println("Fehler beim Laden der Datei.");
                     e.printStackTrace();
+                    System.exit(0);
                 } catch (IOException e) {
-
+                    System.out.println("Fehler beim Laden der Datei.");
                     e.printStackTrace();
+                    System.exit(0);
                 }
 
             }
@@ -36,8 +38,9 @@ public class Leser {
             try {
                 this.leser = new BufferedReader(new FileReader(fullpath));
             } catch (FileNotFoundException e) {
-
+                System.out.println("Fehler beim Laden der Datei.");
                 e.printStackTrace();
+                System.exit(0);
             }
 
         }
@@ -45,8 +48,9 @@ public class Leser {
         try {
             this.header = leser.readLine();
         } catch (IOException e) {
-
+            System.out.println("Fehler beim Laden des Headers.");
             e.printStackTrace();
+            System.exit(0);
         }
 
     }
@@ -61,20 +65,22 @@ public class Leser {
         boolean i = false;
         try {
             while (leser.ready()) {
-                if (i == true) {
+                if (i) {
                     result.add(leser.readLine());
                 }
                 i = true;
             }
         } catch (IOException e) {
-
+            System.out.println("Fehler beim Lesen der Datei.");
             e.printStackTrace();
+            System.exit(0);
         }
         try {
             leser.close();
         } catch (IOException e) {
-
+            System.out.println("Fehler beim Schließen der Datei.");
             e.printStackTrace();
+            System.exit(0);
         }
         return result;
     }
